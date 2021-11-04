@@ -1,6 +1,5 @@
 #![warn(bare_trait_objects)]
 mod app;
-mod banner;
 mod cli;
 mod config;
 mod event;
@@ -11,7 +10,6 @@ mod handlers;
 use crate::{app::App, event::{Event, Key}, router::{ActiveBlock, RouteId}};
 use anyhow::{anyhow, Result};
 use backtrace::Backtrace;
-use banner::BANNER;
 use clap::{App as ClapApp, Arg, Shell};
 use config::Config as CliConfig;
 use core::cmp::max;
