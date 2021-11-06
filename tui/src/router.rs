@@ -1,27 +1,15 @@
-#[derive(Clone, Copy, PartialEq, Debug)]
-pub enum DialogContext {
-    PackageSearch,
-    VersionSearch,
-}
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub enum ActiveBlock {
-    Analysis,
-    Empty,
-    Error,
-    HelpMenu,
     Home,
-    Input,
-    Library,
-    Dialog(DialogContext),
+    Empty,
+    HelpMenu,
 }
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum RouteId {
-    Analysis,
-    Error,
-    Search,
     Home,
+    Help
 }
 
 #[derive(Clone,Debug)]
@@ -36,7 +24,7 @@ impl Default for Route {
         Route {
             id: RouteId::Home,
             active_block: ActiveBlock::Empty,
-            hovered_block: ActiveBlock::Library,
+            hovered_block: ActiveBlock::Empty,
         }
     }
 }
@@ -49,15 +37,13 @@ impl Route {
 
 #[derive(Clone,Debug)]
 pub struct Router {
-    navigation_stack: Vec<Route>,
-    api_error: String
+    navigation_stack: Vec<Route>
 }
 
 impl Router {
     pub fn new() -> Router {
         Router {
             navigation_stack: vec![Route::new()],
-            api_error: String::new()
         }
     }
 
@@ -88,13 +74,7 @@ impl Router {
         }
     }
 
-    pub fn handle_error(&mut self, e: anyhow::Error) {
-        self.push_navigation_stack(RouteId::Error, ActiveBlock::Error);
-        self.api_error = e.to_string();
-    }
-
     pub fn get_current_route(&self) -> &Route {
-        // if for some reason there is no route return the default
         self.navigation_stack.last().unwrap()
     }
 

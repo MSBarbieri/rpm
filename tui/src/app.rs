@@ -3,7 +3,6 @@ use anyhow::Result;
 use tui::layout::Rect;
 
 use crate::{config::Config, event::Events};
-use manager::Engine;
 
 const TITLE: &str = "repo version-manager";
 
@@ -56,7 +55,7 @@ pub struct App {
     pub title: String,
     pub config: Config,
     pub app_should_quit: bool,
-    pub engine: Engine,
+    // pub engine: Engine,
     pub events: Events,
     pub help_settings: HelpSettings,
     pub router: Router,
@@ -70,10 +69,10 @@ pub struct App {
 impl App {
     pub fn new(config: Config) -> Result<Self> {
         let package_manager = config.package_manager.clone();
-        let engine = Engine::new(
-            package_manager.package_list_file_path,
-            package_manager.history_path,
-        );
+        // let engine = Engine::new(
+        //     package_manager.package_list_file_path,
+        //     package_manager.history_path,
+        // );
         let events = Events::new(config.behavior.tick_rate_milliseconds);
 
         Ok(App {
@@ -81,7 +80,6 @@ impl App {
             config,
             events,
             app_should_quit: false,
-            engine,
             help_settings: HelpSettings::default(),
             router: Router::new(),
             windows_settings: WindowSettings::default(),
@@ -92,7 +90,7 @@ impl App {
         })
     }
 
-    pub fn calculate_help_menu_offset(&mut self) {
+    pub async fn calculate_help_menu_offset(&mut self) {
         let old_offset = self.help_settings.help_menu_offset;
 
         if self.help_settings.help_menu_max_lines < self.help_settings.help_docs_size {
@@ -105,10 +103,12 @@ impl App {
         }
     }
 
-    pub fn stop(&mut self) -> Result<()> {
+    pub fn close(&mut self) {
         self.app_should_quit = true;
+    }
 
-        Ok(())
+    pub fn should_quit(&self) -> bool {
+        self.app_should_quit
     }
     pub fn update_on_tick(&mut self) {}
 }
