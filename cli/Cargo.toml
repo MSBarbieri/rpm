@@ -9,16 +9,27 @@ description = "binary package manager using git repositories"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-manager = { version = "^0.1", path = "../manager", optional = false }
-tui = { version = "^0.1", path = "../tui", optional = false }
+#cli
+clap = "2.33"
+arboard = "2.0"
 
+# internal packages
+manager = { version = "^0.1", path = "../manager", optional = false }
+rpm_tui = { version = "^0.1", path = "../tui", optional = false }
+
+# async
+tokio = { version = "1.13", features = ["full"] }
 
 # parsing
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_yaml = "0.8"
 toml = "0.5"
+
+#utils
 unicode-width = "0.1"
+anyhow = "1.0"
+backtrace ="0.3"
 
 [[bin]]
 bench = false

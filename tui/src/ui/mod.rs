@@ -2,13 +2,8 @@ use crate::config::Theme;
 mod help_page;
 pub use help_page::*;
 
-mod home_page;
-pub use home_page::*;
-
 mod page;
 pub use page::*;
-mod search_page;
-pub use search_page::*;
 
 use tui::style::Style;
 
